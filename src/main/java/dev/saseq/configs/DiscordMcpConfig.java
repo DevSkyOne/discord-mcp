@@ -2,6 +2,7 @@ package dev.saseq.configs;
 
 import dev.saseq.services.DiscordService;
 import dev.saseq.services.MessageService;
+import dev.saseq.services.MessageClassificationService;
 import dev.saseq.services.UserService;
 import dev.saseq.services.ChannelService;
 import dev.saseq.services.CategoryService;
@@ -20,6 +21,7 @@ public class DiscordMcpConfig {
     @Bean
     public ToolCallbackProvider discordTools(DiscordService discordService,
                                              MessageService messageService,
+                                             MessageClassificationService messageClassificationService,
                                              UserService userService,
                                              ChannelService channelService,
                                              CategoryService categoryService,
@@ -27,6 +29,7 @@ public class DiscordMcpConfig {
         return MethodToolCallbackProvider.builder().toolObjects(
                 discordService,
                 messageService,
+                messageClassificationService,
                 userService,
                 channelService,
                 categoryService,
@@ -41,7 +44,7 @@ public class DiscordMcpConfig {
             System.exit(1);
         }
         return JDABuilder.createDefault(token)
-                .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
                 .build();
     }
 }
